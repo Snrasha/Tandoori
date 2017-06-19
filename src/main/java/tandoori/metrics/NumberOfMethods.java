@@ -1,14 +1,8 @@
-
-
 package tandoori.metrics;
 
 import tandoori.entities.Entity;
 
-/**
- * Created by Geoffrey Hecht on 20/05/14.
- */
 public class NumberOfMethods extends UnaryMetric<Integer> {
-
     private NumberOfMethods(Entity entity, int value) {
         this.value = value;
         this.entity = entity;
@@ -21,3 +15,4 @@ public class NumberOfMethods extends UnaryMetric<Integer> {
         return numberOfMethods;
     }
 }
+

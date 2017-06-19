@@ -1,10 +1,9 @@
 package tandoori.analyzer;
 
-/**
- * Created by sarra on 21/02/17.
- */
+
 public class VariableData {
     private String className;
+
     private String variableName;
 
     public VariableData(String className, String variableName) {
@@ -28,3 +27,4 @@ public class VariableData {
         this.variableName = variableName;
     }
 }
+

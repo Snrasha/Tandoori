@@ -1,18 +1,17 @@
 package tandoori.analyzer;
 
-/**
- * Created by sarra on 21/02/17.
- */
+
 public class InvocationData {
     private String target;
-    private String method;
-    private String type;
 
+    private String method;
+
+    private String type;
 
     public InvocationData(String target, String method, String type) {
         this.target = target;
         this.method = method;
-        this.type=type;
+        this.type = type;
     }
 
     public String getTarget() {
@@ -39,3 +38,4 @@ public class InvocationData {
         this.type = type;
     }
 }
+

@@ -1,30 +1,47 @@
 package tandoori.entities;
 
 import java.util.ArrayList;
+import codesmells.annotations.CC;
+import codesmells.annotations.IGS;
+import codesmells.annotations.LM;
 import java.util.List;
 
-/**
- * Created by Geoffrey Hecht on 20/05/14.
- */
-public class PaprikaApp extends Entity{
+@CC
+public class PaprikaApp extends Entity {
     private double rating;
+
     private String date;
-    private String pack; //Package
+
+    private String pack;
+
     private int size;
+
     private String developer;
+
     private String category;
+
     private String price;
+
     private String key;
+
     private String nbDownload;
+
     private String versionCode;
+
     private String versionName;
+
     private String sdkVersion;
+
     private String targetSdkVersion;
+
     private List<PaprikaClass> paprikaClasses;
+
     private List<PaprikaExternalClass> paprikaExternalClasses;
+
     private ArrayList<PaprikaLibrary> paprikaLibraries;
 
-    private PaprikaApp(String name, String key, String pack, String date, int size, String developer, String category, String price, double rating, String nbDownload, String versionCode,String versionName,String sdkVersion,String targetSdkVersion) {
+    @LM
+    private PaprikaApp(String name, String key, String pack, String date, int size, String developer, String category, String price, double rating, String nbDownload, String versionCode, String versionName, String sdkVersion, String targetSdkVersion) {
         this.name = name;
         this.key = key;
         this.pack = pack;
@@ -44,8 +61,9 @@ public class PaprikaApp extends Entity{
         this.paprikaLibraries = new ArrayList<>();
     }
 
+    @LM
     private PaprikaApp(String name, String version, String key) {
-        this.name=name;
+        this.name = name;
         this.key = key;
         this.versionName = version;
         this.paprikaClasses = new ArrayList<>();
@@ -53,16 +71,15 @@ public class PaprikaApp extends Entity{
         this.paprikaLibraries = new ArrayList<>();
     }
 
-    public static PaprikaApp createPaprikaApp(String name, String version, String key){
-        return new PaprikaApp(name,version,key);
+    public static PaprikaApp createPaprikaApp(String name, String version, String key) {
+        return new PaprikaApp(name, version, key);
     }
 
     public List<PaprikaExternalClass> getPaprikaExternalClasses() {
         return paprikaExternalClasses;
     }
 
-
-    public void addPaprikaExternalClass(PaprikaExternalClass paprikaExternalClass){
+    public void addPaprikaExternalClass(PaprikaExternalClass paprikaExternalClass) {
         paprikaExternalClasses.add(paprikaExternalClass);
     }
 
@@ -70,13 +87,12 @@ public class PaprikaApp extends Entity{
         return paprikaClasses;
     }
 
-
-    public void addPaprikaClass(PaprikaClass paprikaClass){
+    public void addPaprikaClass(PaprikaClass paprikaClass) {
         paprikaClasses.add(paprikaClass);
     }
 
-    public static PaprikaApp createPaprikaApp(String name, String key, String pack, String date, int size, String dev, String cat, String price, double rating, String nbDownload, String versionCode,String versionName,String sdkVersion,String targetSdkVersion) {
-        return new PaprikaApp(name,key,pack,date,size,dev,cat,price,rating,nbDownload,versionCode,versionName,sdkVersion,targetSdkVersion);
+    public static PaprikaApp createPaprikaApp(String name, String key, String pack, String date, int size, String dev, String cat, String price, double rating, String nbDownload, String versionCode, String versionName, String sdkVersion, String targetSdkVersion) {
+        return new PaprikaApp(name, key, pack, date, size, dev, cat, price, rating, nbDownload, versionCode, versionName, sdkVersion, targetSdkVersion);
     }
 
     public double getRating() {
@@ -131,40 +147,43 @@ public class PaprikaApp extends Entity{
         return targetSdkVersion;
     }
 
-    public ArrayList<PaprikaMethod> getMethods(){
+    @IGS
+    public ArrayList<PaprikaMethod> getMethods() {
         ArrayList<PaprikaMethod> paprikaMethods = new ArrayList<>();
-        for(PaprikaClass paprikaClass: this.getPaprikaClasses()){
-            for(PaprikaMethod paprikaMethod: paprikaClass.getPaprikaMethods()){
+        for (PaprikaClass paprikaClass : this.getPaprikaClasses()) {
+            for (PaprikaMethod paprikaMethod : paprikaClass.getPaprikaMethods()) {
                 paprikaMethods.add(paprikaMethod);
             }
         }
         return paprikaMethods;
     }
 
-    public Entity getPaprikaClass( String className){
-        for(PaprikaClass paprikaClass: this.getPaprikaClasses()){
-            if(paprikaClass.getName().equals(className)){
+    @IGS
+    public Entity getPaprikaClass(String className) {
+        for (PaprikaClass paprikaClass : this.getPaprikaClasses()) {
+            if (paprikaClass.getName().equals(className)) {
                 return paprikaClass;
             }
         }
-        for(PaprikaExternalClass paprikaExternalClass: this.getPaprikaExternalClasses()){
-            if(paprikaExternalClass.getName().equals(className)){
+        for (PaprikaExternalClass paprikaExternalClass : this.getPaprikaExternalClasses()) {
+            if (paprikaExternalClass.getName().equals(className)) {
                 return paprikaExternalClass;
             }
         }
-        return PaprikaExternalClass.createPaprikaExternalClass(className,this);
+        return PaprikaExternalClass.createPaprikaExternalClass(className, this);
     }
 
-    public PaprikaClass getPaprikaInternalClass( String className){
-        for(PaprikaClass paprikaClass: this.getPaprikaClasses()){
-            if(paprikaClass.getName().equals(className)){
+    @IGS
+    public PaprikaClass getPaprikaInternalClass(String className) {
+        for (PaprikaClass paprikaClass : this.getPaprikaClasses()) {
+            if (paprikaClass.getName().equals(className)) {
                 return paprikaClass;
             }
         }
         return null;
     }
 
-    public void addPaprikaLibrary(PaprikaLibrary paprikaLibrary){
+    public void addPaprikaLibrary(PaprikaLibrary paprikaLibrary) {
         this.paprikaLibraries.add(paprikaLibrary);
     }
 
@@ -172,3 +191,4 @@ public class PaprikaApp extends Entity{
         return paprikaLibraries;
     }
 }
+

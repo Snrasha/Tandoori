@@ -1,11 +1,9 @@
-
-
 package tandoori.metrics;
 
+import tandoori.entities.Entity;
 import tandoori.entities.PaprikaMethod;
 
 public class IsInit extends UnaryMetric<Boolean> {
-
     private IsInit(PaprikaMethod entity, boolean value) {
         this.value = value;
         this.entity = entity;
@@ -18,3 +16,4 @@ public class IsInit extends UnaryMetric<Boolean> {
         return isInit;
     }
 }
+

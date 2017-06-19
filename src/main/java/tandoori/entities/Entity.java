@@ -2,15 +2,12 @@ package tandoori.entities;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import tandoori.metrics.Metric;
 import tandoori.metrics.UnaryMetric;
 
-/**
- * Created by Geoffrey Hecht on 20/05/14.
- */
 public abstract class Entity {
     protected String name;
+
     protected List<Metric> metrics = new ArrayList<>();
 
     public String getName() {
@@ -29,7 +26,7 @@ public abstract class Entity {
         this.metrics = metrics;
     }
 
-    public void addMetric(UnaryMetric unaryMetric){
+    public void addMetric(UnaryMetric unaryMetric) {
         this.metrics.add(unaryMetric);
     }
 
@@ -37,6 +34,5 @@ public abstract class Entity {
     public String toString() {
         return name;
     }
-
-
 }
+
