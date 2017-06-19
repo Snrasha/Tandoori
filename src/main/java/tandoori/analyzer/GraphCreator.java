@@ -1,8 +1,8 @@
 package tandoori.analyzer;
 
 import java.util.ArrayList;
-
 import tandoori.entities.Entity;
+import codesmells.annotations.LM;
 import tandoori.entities.PaprikaApp;
 import tandoori.entities.PaprikaClass;
 import tandoori.entities.PaprikaExternalClass;
@@ -10,17 +10,14 @@ import tandoori.entities.PaprikaExternalMethod;
 import tandoori.entities.PaprikaMethod;
 import tandoori.entities.PaprikaVariable;
 
-/**
- * Created by sarra on 27/02/17.
- */
 public class GraphCreator {
-
     PaprikaApp paprikaApp;
 
     public GraphCreator(PaprikaApp paprikaApp) {
         this.paprikaApp = paprikaApp;
     }
 
+    @LM
     public void createCallGraph() {
         Entity targetClass;
         Entity targetMethod;
@@ -31,15 +28,12 @@ public class GraphCreator {
             for (InvocationData invocationData : paprikaMethod.getInvocationData()) {
                 targetClass = paprikaApp.getPaprikaClass(invocationData.getTarget());
                 if (targetClass instanceof PaprikaClass) {
-                    targetMethod = ((PaprikaClass) targetClass).getPaprikaMethod(invocationData.getMethod());
-                } else {
-
-                    targetMethod = PaprikaExternalMethod.createPaprikaExternalMethod(invocationData.getMethod(), invocationData.getType(),
-                            (PaprikaExternalClass) targetClass);
+                    targetMethod = ((PaprikaClass) (targetClass)).getPaprikaMethod(invocationData.getMethod());
+                }else {
+                    targetMethod = PaprikaExternalMethod.createPaprikaExternalMethod(invocationData.getMethod(), invocationData.getType(), ((PaprikaExternalClass) (targetClass)));
                 }
                 paprikaMethod.callMethod(targetMethod);
             }
-
             for (VariableData variableData : paprikaMethod.getUsedVariablesData()) {
                 paprikaClass = paprikaApp.getPaprikaInternalClass(variableData.getClassName());
                 if (paprikaClass != null) {
@@ -50,9 +44,9 @@ public class GraphCreator {
                 }
             }
         }
-
     }
 
+    @LM
     public void createClassHierarchy() {
         for (PaprikaClass paprikaClass : paprikaApp.getPaprikaClasses()) {
             String parentName = paprikaClass.getParentName();
@@ -71,9 +65,7 @@ public class GraphCreator {
                     paprikaClass.implement(implementedInterface);
                 }
             }
-
         }
     }
-
-
 }
+

@@ -1,53 +1,56 @@
-/*
- * Paprika - Detection of code smells in Android application
- *     Copyright (C)  2016  Geoffrey Hecht - INRIA - UQAM - University of Lille
- *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as
- *     published by the Free Software Foundation, either version 3 of the
- *     License, or (at your option) any later version.
- *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
- *
- *     You should have received a copy of the GNU Affero General Public License
- *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package tandoori.entities;
 
 import java.util.ArrayList;
+import codesmells.annotations.CC;
 import java.util.HashSet;
+import codesmells.annotations.IGS;
+import codesmells.annotations.LM;
 import java.util.Set;
 
-/**
- * Created by Geoffrey Hecht on 20/05/14.
- */
-public class PaprikaClass extends Entity{
+@CC
+public class PaprikaClass extends Entity {
     private PaprikaApp paprikaApp;
+
     private PaprikaClass parent;
-    //parent name to cover library case
+
     private String parentName;
+
     private int children;
+
     private int complexity;
+
     private Set<PaprikaClass> coupled;
+
     private Set<PaprikaMethod> paprikaMethods;
+
     private Set<PaprikaVariable> paprikaVariables;
+
     private Set<PaprikaClass> interfaces;
+
     private PaprikaModifiers modifier;
+
     private boolean isInterface;
+
     private boolean isStatic;
+
     private boolean isActivity;
+
     private boolean isBroadcastReceiver;
+
     private boolean isService;
+
     private boolean isContentProvider;
+
     private boolean isView;
+
     private boolean isAsyncTask;
+
     private boolean isApplication;
+
     private boolean isInnerClass;
+
     private int depthOfInheritance;
+
     private ArrayList<String> interfacesNames;
 
     public PaprikaModifiers getModifier() {
@@ -70,28 +73,29 @@ public class PaprikaClass extends Entity{
         this.parentName = parentName;
     }
 
+    @LM
     private PaprikaClass(String name, PaprikaApp paprikaApp, PaprikaModifiers modifier) {
         this.setName(name);
         this.paprikaApp = paprikaApp;
         this.children = 0;
-        this.paprikaMethods  = new HashSet<>();
+        this.paprikaMethods = new HashSet<>();
         this.paprikaVariables = new HashSet<>();
         this.coupled = new HashSet<>();
         this.interfaces = new HashSet<>();
         this.modifier = modifier;
-        this.isInterface=false;
-        this.isStatic=false;
-        this.isActivity=false;
-        this.isApplication=false;
-        this.isAsyncTask=false;
-        this.isService=false;
-        this.isContentProvider=false;
-        this.isBroadcastReceiver=false;
-        this.isInnerClass=false;
-        this.isView=false;
-        this.depthOfInheritance=0;
-        this.interfacesNames=new ArrayList<>();
-        complexity=0;
+        this.isInterface = false;
+        this.isStatic = false;
+        this.isActivity = false;
+        this.isApplication = false;
+        this.isAsyncTask = false;
+        this.isService = false;
+        this.isContentProvider = false;
+        this.isBroadcastReceiver = false;
+        this.isInnerClass = false;
+        this.isView = false;
+        this.depthOfInheritance = 0;
+        this.interfacesNames = new ArrayList<>();
+        complexity = 0;
     }
 
     public static PaprikaClass createPaprikaClass(String name, PaprikaApp paprikaApp, PaprikaModifiers modifier) {
@@ -104,13 +108,15 @@ public class PaprikaClass extends Entity{
         return parent;
     }
 
-    public Set<PaprikaClass> getInterfaces(){ return interfaces;}
+    public Set<PaprikaClass> getInterfaces() {
+        return interfaces;
+    }
 
     public void setParent(PaprikaClass parent) {
         this.parent = parent;
     }
 
-    public void addPaprikaMethod(PaprikaMethod paprikaMethod){
+    public void addPaprikaMethod(PaprikaMethod paprikaMethod) {
         paprikaMethods.add(paprikaMethod);
     }
 
@@ -122,61 +128,66 @@ public class PaprikaClass extends Entity{
         this.paprikaApp = paprikaApp;
     }
 
+    public void addChild() {
+        children += 1;
+    }
 
-    public void addChild() { children += 1;}
-
+    @IGS
     public int computeComplexity() {
-
-        for(PaprikaMethod paprikaMethod: this.getPaprikaMethods()){
-            this.complexity+=paprikaMethod.getComplexity();
+        for (PaprikaMethod paprikaMethod : this.getPaprikaMethods()) {
+            this.complexity += paprikaMethod.getComplexity();
         }
         return this.complexity;
     }
 
-    public int getChildren() { return children; }
+    public int getChildren() {
+        return children;
+    }
 
-    public void coupledTo(PaprikaClass paprikaClass){ coupled.add(paprikaClass);}
+    public void coupledTo(PaprikaClass paprikaClass) {
+        coupled.add(paprikaClass);
+    }
 
-    public void implement(PaprikaClass paprikaClass){ interfaces.add(paprikaClass);}
+    public void implement(PaprikaClass paprikaClass) {
+        interfaces.add(paprikaClass);
+    }
 
-    public int getCouplingValue(){ return coupled.size();}
+    public int getCouplingValue() {
+        return coupled.size();
+    }
 
-    public int computeLCOM(){
-        Object methods[] = paprikaMethods.toArray();
+    public int computeLCOM() {
+        Object[] methods = paprikaMethods.toArray();
         int methodCount = methods.length;
         int haveFieldInCommon = 0;
-        int noFieldInCommon  = 0;
-        for(int i=0; i< methodCount;i++){
-            for(int j=i+1; j < methodCount; j++){
-                if( ((PaprikaMethod) methods[i]).haveCommonFields((PaprikaMethod) methods[j])){
+        int noFieldInCommon = 0;
+        for (int i = 0; i < methodCount; i++) {
+            for (int j = i + 1; j < methodCount; j++) {
+                if (((PaprikaMethod) (methods[i])).haveCommonFields(((PaprikaMethod) (methods[j])))) {
                     haveFieldInCommon++;
-                }else{
+                }else {
                     noFieldInCommon++;
                 }
             }
         }
-        int LCOM =  noFieldInCommon - haveFieldInCommon;
+        int LCOM = noFieldInCommon - haveFieldInCommon;
         return LCOM > 0 ? LCOM : 0;
     }
 
-    /**
-        Get the NPath complexity of the entire program
-        The NPath complexity is just the combinatorial of the cyclomatic complexity
-     **/
     public double computeNPathComplexity() {
-        return Math.pow(2.0, (double) this.complexity);
+        return Math.pow(2.0, ((double) (this.complexity)));
     }
 
     public void addPaprikaVariable(PaprikaVariable paprikaVariable) {
         paprikaVariables.add(paprikaVariable);
     }
 
-    public PaprikaVariable findVariable(String name){
-        // First we are looking to the field declared by this class (any modifiers)
-        for (PaprikaVariable paprikaVariable : paprikaVariables){
-            if (paprikaVariable.getName().equals(name)) return paprikaVariable;
+    public PaprikaVariable findVariable(String name) {
+        for (PaprikaVariable paprikaVariable : paprikaVariables) {
+            if (paprikaVariable.getName().equals(name))
+                return paprikaVariable;
+            
         }
-        //otherwise we return null
         return null;
     }
 
@@ -212,15 +223,14 @@ public class PaprikaClass extends Entity{
         this.interfacesNames = interfacesNames;
     }
 
-    public PaprikaMethod getPaprikaMethod(String methodName){
-        for(PaprikaMethod paprikaMethod: this.getPaprikaMethods()){
-            if(paprikaMethod.getName().equals(methodName)){
+    @IGS
+    public PaprikaMethod getPaprikaMethod(String methodName) {
+        for (PaprikaMethod paprikaMethod : this.getPaprikaMethods()) {
+            if (paprikaMethod.getName().equals(methodName)) {
                 return paprikaMethod;
             }
         }
-        //TODO check the return type and modifier in the super classes
-        return  PaprikaMethod.createPaprikaMethod(methodName,PaprikaModifiers.PUBLIC,"Uknown",this);
-
+        return PaprikaMethod.createPaprikaMethod(methodName, PaprikaModifiers.PUBLIC, "Uknown", this);
     }
 
     public int getDepthOfInheritance() {
@@ -319,3 +329,4 @@ public class PaprikaClass extends Entity{
         isInnerClass = innerClass;
     }
 }
+
