@@ -15,13 +15,13 @@ import tandoori.entities.PaprikaMethod;
  */
 public class MainProcessor {
 
-    static PaprikaApp currentApp;
-    static PaprikaClass currentClass;
-    static PaprikaMethod currentMethod;
-    static ArrayList<URL> paths;
-    String appPath;
-    String jarsPath;
-    String sdkPath;
+    public static PaprikaApp currentApp;
+    public static PaprikaClass currentClass;
+    public static PaprikaMethod currentMethod;
+    public static ArrayList<URL> paths;
+    protected String appPath;
+    protected String jarsPath;
+    protected String sdkPath;
 
     public MainProcessor(String appName, String appVersion, String appKey, String appPath, String sdkPath, String jarsPath) {
         this.currentApp = PaprikaApp.createPaprikaApp(appName, appVersion, appKey);
